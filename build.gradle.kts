@@ -1,41 +1,26 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     java
     signing
     `maven-publish`
-    alias(libs.plugins.spotbugs)
-    alias(libs.plugins.spotless)
-    alias(libs.plugins.git.version) apply false
     alias(libs.plugins.nexus.publish)
 }
 
-val dotgit = project.file(".git")
-if (dotgit.exists()) {
-    apply(plugin = libs.plugins.git.version.get().pluginId)
-    val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
-    val details = versionDetails()
-    val baseVersion = details.lastTag.substring(1)
-    version = when {
-        details.isCleanTag -> baseVersion
-        else -> baseVersion + "-" + details.commitDistance + "-" + details.gitHash + "-SNAPSHOT"
-    }
-} else {
-    val gitArchival = project.file(".git-archival.properties")
-    val props = Properties()
-    props.load(FileInputStream(gitArchival))
-    val versionDescribe = props.getProperty("describe")
-    val regex = "^v\\d+\\.\\d+\\.\\d+$".toRegex()
-    version = when {
-        regex.matches(versionDescribe) -> versionDescribe.substring(1)
-        else -> versionDescribe.substring(1) + "-SNAPSHOT"
-    }
-}
+version = "6.5.5"
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.BIN
     gradleVersion = "8.10"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "ISO-8859-1"
 }
 
 repositories {
@@ -43,28 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.slf4j.api)
-    implementation(libs.slf4j.format.jdk14)
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly(libs.slf4j.simple)
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
-
-tasks.jar {
-    manifest {
-        attributes("Automatic-Module-Name" to "tokyo.northside.example")
-    }
+    implementation("org.jdom:jdom:1.1.3")
 }
 
 publishing {
@@ -72,15 +36,15 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             groupId = "tokyo.northside"
-            artifactId = "example"
+            artifactId = "saxon"
             pom {
-                name.set("example")
-                description.set("Example Library")
-                url.set("https://codeberg.org/miurahr/example")
+                name.set("saxon")
+                description.set("Saxon 6.5.5 Library")
+                url.set("https://github.com/miurahr/saxon-6-5-5")
                 licenses {
                     license {
-                        name.set("The GNU General Public License, Version 3")
-                        url.set("https://www.gnu.org/licenses/licenses/gpl-3.html")
+                        name.set("Mozilla Public License")
+                        url.set("https://opensource.org/license/mpl-1-0")
                         distribution.set("repo")
                     }
                 }
@@ -92,9 +56,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://codeberg.org/miurahr/example.git")
-                    developerConnection.set("scm:git:git://codeberg.org/miurahr/example.git")
-                    url.set("https://codeberg.org/miurahr/example")
+                    connection.set("scm:git:git://github.com/miurahr/saxon-6-5-5.git")
+                    developerConnection.set("scm:git:git://github.com/miurahr/saxon-6-5-5.git")
+                    url.set("https://github.com/miurahr/saxon-6-5-5")
                 }
             }
         }
@@ -139,20 +103,4 @@ tasks.withType<Copy> {
 
 tasks.withType<Jar> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-spotless {
-    format("misc") {
-        target(listOf("*.gradle", ".gitignore"))
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
-    }
-    java {
-        target(listOf("src/*/java/**/*.java"))
-        palantirJavaFormat()
-        importOrder()
-        removeUnusedImports()
-        formatAnnotations()
-    }
 }

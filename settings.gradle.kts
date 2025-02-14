@@ -9,4 +9,4 @@ develocity {
         termsOfUseAgree = "yes"
     }
 }
-rootProject.name = "gradle-project-skeleton"
+rootProject.name = "saxon-6-5-5"

@@ -6,4 +6,4 @@ All notable changes to this project will be documented in this file.
 ## v0.1.0
 * First internal release
 
-[Unreleased]: https://codeberg.org/miurahr/jgit-gpg-signer/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/miurahr/saxon-6-5-5/compare/v0.1.0...HEAD
