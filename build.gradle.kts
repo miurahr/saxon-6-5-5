@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.nexus.publish)
 }
 
-version = "6.5.5"
+version = "1.0.0"
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.BIN

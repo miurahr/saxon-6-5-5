@@ -9,7 +9,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 
 /**
-  * This class generates XML or HTML output depending on whether the first tag output is "<html>"
+  * This class generates XML or HTML output depending on whether the first tag output is "html>"
   * @author Michael H. Kay
   */
 

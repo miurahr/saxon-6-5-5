@@ -1,6 +1,6 @@
 package com.icl.saxon.sort;
 
-// Copyright © International Computers Limited 1998
+// Copyright (C) International Computers Limited 1998
 // See conditions of use
 
 /**

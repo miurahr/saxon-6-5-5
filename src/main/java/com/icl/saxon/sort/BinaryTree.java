@@ -2,7 +2,7 @@ package com.icl.saxon.sort;
 import java.text.*;
 import java.util.*;
 
-// Copyright © International Computers Limited 1998
+// Copyright (C) International Computers Limited 1998
 // See conditions of use
 
 /**
