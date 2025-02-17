@@ -31,10 +31,24 @@ dependencies {
     implementation("org.jdom:jdom:1.1.3")
 }
 
+val documentJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("doc")
+    from("src/doc")
+}
+
+tasks.assemble {
+    dependsOn(documentJar)
+}
+
+artifacts {
+    archives(documentJar)
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+            artifact(tasks["documentJar"])
             groupId = "tokyo.northside"
             artifactId = "saxon-6-5-5"
             pom {
