@@ -2,7 +2,7 @@ plugins {
     java
     signing
     `maven-publish`
-    alias(libs.plugins.nexus.publish)
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
 version = "1.0.0"
@@ -36,7 +36,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             groupId = "tokyo.northside"
-            artifactId = "saxon"
+            artifactId = "saxon-6-5-5"
             pom {
                 name.set("saxon")
                 description.set("Saxon 6.5.5 Library")
