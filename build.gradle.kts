@@ -106,9 +106,17 @@ tasks.withType<Javadoc>() {
         jFlags("-Duser.language=en")
     }
 }
+val sonatypeUsername: String? by project
+val sonatypePassword: String? by project
 
 nexusPublishing.repositories {
-    sonatype()
+    sonatype {
+        stagingProfileId = "121f28671d24dc"
+        if (sonatypeUsername != null && sonatypePassword != null) {
+            username.set(sonatypeUsername)
+            password.set(sonatypePassword)
+        }
+    }
 }
 
 tasks.withType<Copy> {
