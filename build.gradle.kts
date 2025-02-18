@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jdom:jdom:1.1.3")
+    implementation("org.jdom:jdom:2.0.2")
 }
 
 val documentJar by tasks.registering(Jar::class) {
